@@ -1,2 +1,2 @@
 # sparkbot
-Spark Bot Service on Pygics
+Spark Bot Service
