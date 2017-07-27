@@ -54,14 +54,18 @@ version : 0.1.1
 	import pygics
 	import sparkbot
 	
-	BOT_KEY = ''
 	BOT_ID = ''
+	BOT_KEY = ''
 	BOT_SERVER = ''
 	
-	@pygics.service('POST', '/' + BOT_ID)
+	@pygics.api('POST', BOT_ID)
 	@sparkbot.message(BOT_KEY, BOT_ID, BOT_SERVER)
 	def episode(data, who, text):
-	    if text.lower() in ['hi', 'hello']: return 'Hello!'
+	    #=========================================
+	    # Write Code Here !
+	    #=========================================
+	    if text.lower() in ['hi', 'hello']:
+	        return 'Hello!'
 	    return '%s say that\n"%s"' % (who, text)
 
 - "episode" function is main procedure.
