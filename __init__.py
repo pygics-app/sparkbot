@@ -43,8 +43,8 @@ def __replyError__(key, room_id, err_msg='unknown error'):
     return 'failed'
 
 def __encoding_str__(text):
-    if isinstance(text, str):
-        print 'Str Encode'
+    if isinstance(text, str) or isinstance(text, unicode):
+        print 'Try Str or Unicode Decode'
         return text
     else:
         try:
