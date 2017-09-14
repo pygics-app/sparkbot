@@ -4,6 +4,7 @@ Created on 2017. 4. 12.
 @author: HyechurnJang
 '''
 
+import re
 import pygics
 import requests
 
@@ -52,7 +53,7 @@ def __encoding_str__(text):
 class MarkDown:
     def __init__(self, text): self.text = text
 
-def message(key, bot_id, bot_server):
+def message(key, bot_name, bot_id, bot_server):
     
     __registerHook__(key, bot_id + 'Hook', 'http://%s/sparkbot/%s' % (bot_server, bot_id))
     bot_email = bot_id + '@sparkbot.io'
@@ -84,6 +85,11 @@ def message(key, bot_id, bot_server):
                 recv_text = msg_data['text']
                 person_name = psn_data['displayName']
             except Exception as e: return __replyError__(key, room_id, str(e))
+            kv = re.match('^%s\s*(?P<text>.*)' % bot_name, recv_text)
+            if kv:
+                recv_text = kv.group('text')
+                space = True
+            else: space = False
             
             try: ret_text = func({'hook' : req.data,
                                    'person' : psn_data,
@@ -96,14 +102,22 @@ def message(key, bot_id, bot_server):
                 if isinstance(ret_text, MarkDown):
                     try: send_text = __encoding_str__(ret_text.text)
                     except: return __replyError__(key, room_id, 'encode string')
+                    if space:
+                        to_msg = u'TO : %s' % person_name
+                        try: requests.post(SPARK_MESSAGE_URL, headers=headers, json={'roomId' : room_id, 'text' : to_msg})
+                        except: pass
                     try: resp = requests.post(SPARK_MESSAGE_URL, headers=headers,
-                                              json={'roomId' : room_id, 'markdown' : send_text})
+                                              json={'roomId' : room_id,
+                                                    'markdown' : send_text})
                     except Exception as e: return __replyError__(key, room_id, str(e))
                 else:
                     try: send_text = __encoding_str__(ret_text)
                     except: return __replyError__(key, room_id, 'encode string')
+                    if space:
+                        send_text = u'To : %s\n%s' % (person_name, send_text)
                     try: resp = requests.post(SPARK_MESSAGE_URL, headers=headers,
-                                              json={'roomId' : room_id, 'text' : send_text})
+                                              json={'roomId' : room_id,
+                                                    'text' : send_text})
                     except Exception as e: return __replyError__(key, room_id, str(e))
                 if resp.status_code != 200: return __replyError__(key, room_id, 'send message')
             return 'ok'
