@@ -45,9 +45,9 @@ def __replyError__(key, room_id, err_msg='unknown error'):
 def __encoding_str__(text):
     if isinstance(text, str): return text
     else:
-        try: return text.decode('utf-8')
+        try: return '%s' % text.decode('utf-8')
         except:
-            try: return text.decode('utf-16')
+            try: return '%s' % text.decode('utf-16')
             except: raise Exception()
 
 class MarkDown:
