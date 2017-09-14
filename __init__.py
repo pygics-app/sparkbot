@@ -43,12 +43,20 @@ def __replyError__(key, room_id, err_msg='unknown error'):
     return 'failed'
 
 def __encoding_str__(text):
-    if isinstance(text, str): return text
+    if isinstance(text, str):
+        print 'Str Encode'
+        return text
     else:
-        try: return '%s' % text.decode('utf-8')
+        try:
+            print 'Try Utf-8 Decode'
+            return '%s' % text.decode('utf-8')
         except:
-            try: return '%s' % text.decode('utf-16')
-            except: raise Exception()
+            try:
+                print 'Try Utf-16 Decode'
+                return '%s' % text.decode('utf-16')
+            except Exception as e:
+                print str(e)
+                raise e
 
 class MarkDown:
     def __init__(self, text): self.text = text
