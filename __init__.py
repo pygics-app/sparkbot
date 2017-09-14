@@ -11,7 +11,7 @@ SPARK_WEBHOOK_URL = 'https://api.ciscospark.com/v1/webhooks/'
 SPARK_MESSAGE_URL = 'https://api.ciscospark.com/v1/messages/'
 SPARK_PERSON_URL = 'https://api.ciscospark.com/v1/people/'
 
-def registerHook(key, name, url):
+def __registerHook__(key, name, url):
     headers = {'Content-type' : 'application/json; charset=utf-8', 'Authorization' : 'Bearer %s' % key}
     try:
         resp = requests.get(SPARK_WEBHOOK_URL, headers=headers)
@@ -32,7 +32,7 @@ def registerHook(key, name, url):
     except: return False
     return False
 
-def replyError(key, room_id, err_msg='unknown error'):
+def __replyError__(key, room_id, err_msg='unknown error'):
     headers = {'Content-type' : 'application/json; charset=utf-8', 'Authorization' : 'Bearer %s' % key}
     try:
         requests.post(SPARK_MESSAGE_URL, headers=headers,
@@ -41,9 +41,20 @@ def replyError(key, room_id, err_msg='unknown error'):
     except: return 'failed'
     return 'failed'
 
+def __encoding_str__(text):
+    if isinstance(text, str): return text
+    else:
+        try: return text.decode('utf-8')
+        except:
+            try: return text.decode('utf-16')
+            except: raise Exception()
+
+class MarkDown:
+    def __init__(self, text): self.text = text
+
 def message(key, bot_id, bot_server):
     
-    registerHook(key, bot_id + 'Hook', 'http://%s/sparkbot/%s' % (bot_server, bot_id))
+    __registerHook__(key, bot_id + 'Hook', 'http://%s/sparkbot/%s' % (bot_server, bot_id))
     bot_email = bot_id + '@sparkbot.io'
     
     def botfunc(func):
@@ -64,36 +75,37 @@ def message(key, bot_id, bot_server):
                 )(requests.get, SPARK_MESSAGE_URL + msg_id, headers=headers
                 )(requests.get, SPARK_PERSON_URL + person_id, headers=headers
                 ).do()
-            except Exception as e: return replyError(key, room_id, str(e))
-            if msg_resp.status_code != 200 or psn_resp.status_code != 200: return replyError(key, room_id, 'recv message and person detail')
+            except Exception as e: return __replyError__(key, room_id, str(e))
+            if msg_resp.status_code != 200 or psn_resp.status_code != 200: return __replyError__(key, room_id, 'recv message and person detail')
             
             try:
                 msg_data = msg_resp.json()
                 psn_data = psn_resp.json()
                 recv_text = msg_data['text']
                 person_name = psn_data['displayName']
-            except Exception as e: return replyError(key, room_id, str(e))
+            except Exception as e: return __replyError__(key, room_id, str(e))
             
             try: ret_text = func({'hook' : req.data,
                                    'person' : psn_data,
                                    'message' : msg_data},
                                    person_name,
                                    recv_text)
-            except Exception as e: return replyError(key, room_id, str(e))
+            except Exception as e: return __replyError__(key, room_id, str(e))
             
             if ret_text != None:
-                try: send_text = 'To: %s\n%s' % (person_name, ret_text)
-                except:
-                    try: send_text = 'To: %s\n%s' % (person_name, ret_text.decode('utf-8'))
-                    except:
-                        try: send_text = 'To: %s\n%s' % (person_name, ret_text.decode('utf-16'))
-                        except: return replyError(key, room_id, 'encode string')
-                try:
-                    resp = requests.post(SPARK_MESSAGE_URL, headers=headers,
-                                         json={'roomId' : room_id,
-                                               'text' : send_text})
-                except Exception as e: return replyError(key, room_id, str(e))
-                if resp.status_code != 200: return replyError(key, room_id, 'send message')
+                if isinstance(ret_text, MarkDown):
+                    try: send_text = __encoding_str__(ret_text.text)
+                    except: return __replyError__(key, room_id, 'encode string')
+                    try: resp = requests.post(SPARK_MESSAGE_URL, headers=headers,
+                                              json={'roomId' : room_id, 'markdown' : send_text})
+                    except Exception as e: return __replyError__(key, room_id, str(e))
+                else:
+                    try: send_text = __encoding_str__(ret_text)
+                    except: return __replyError__(key, room_id, 'encode string')
+                    try: resp = requests.post(SPARK_MESSAGE_URL, headers=headers,
+                                              json={'roomId' : room_id, 'text' : send_text})
+                    except Exception as e: return __replyError__(key, room_id, str(e))
+                if resp.status_code != 200: return __replyError__(key, room_id, 'send message')
             return 'ok'
     
         return decofunc
