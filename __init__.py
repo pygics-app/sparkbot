@@ -214,6 +214,8 @@ def message(key, bot_name, bot_id, bot_server):
             try: ret_text = func({'hook' : req.data,
                                   'person' : psn_data,
                                   'message' : msg_data,
+                                  'room_id' : room_id,
+                                  'person_id' : person_id,
                                   'space' : space},
                                  person_name,
                                  recv_text)
