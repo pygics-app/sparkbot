@@ -166,6 +166,13 @@ class TalkBox:
             return reply, next_reply
         else: return self.locking, None
 
+def msg(key, room_id, text):
+    resp = requests.post(SPARK_MESSAGE_URL,
+                         headers={'Content-type' : 'application/json; charset=utf-8', 'Authorization' : 'Bearer %s' % key},
+                         json={'roomId' : room_id, 'text' : text})
+    if resp.status_code == 200: return True
+    return False
+
 def message(key, bot_name, bot_id, bot_server):
     
     __registerHook__(key, bot_id + 'Hook', 'http://%s/sparkbot/%s' % (bot_server, bot_id))
@@ -205,10 +212,11 @@ def message(key, bot_name, bot_id, bot_server):
             else: space = False
             
             try: ret_text = func({'hook' : req.data,
-                                   'person' : psn_data,
-                                   'message' : msg_data},
-                                   person_name,
-                                   recv_text)
+                                  'person' : psn_data,
+                                  'message' : msg_data,
+                                  'space' : space},
+                                 person_name,
+                                 recv_text)
             except Exception as e: return __replyError__(key, room_id, str(e))
             
             if ret_text != None:
