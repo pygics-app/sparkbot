@@ -7,12 +7,13 @@ Created on 2017. 4. 12.
 import pygics
 import sparkbot
 
+BOT_NAME = ''
 BOT_ID = ''
 BOT_KEY = ''
 BOT_SERVER = ''
 
 @pygics.api('POST', BOT_ID)
-@sparkbot.message(BOT_KEY, BOT_ID, BOT_SERVER)
+@sparkbot.message(BOT_KEY, BOT_NAME, BOT_ID, BOT_SERVER)
 def episode(data, who, text):
     #===========================================================================
     # Write Code Here !
