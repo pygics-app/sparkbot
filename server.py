@@ -6,6 +6,4 @@ Created on 2017. 5. 30.
 
 import pygics
 
-pygics.server('0.0.0.0',
-              80,
-              modules='../sparkbot')
+pygics.server('0.0.0.0', 80, '../sparkbot')
