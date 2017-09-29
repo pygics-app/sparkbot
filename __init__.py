@@ -142,7 +142,7 @@ class TalkBox:
             self.talk[talk._id] = talk
         return self
     
-    def do(self, user, text):
+    def do(self, data, user, text):
         if user not in self.context:
             self.context[user] = {'curr' : self.init, 'hist' : [], 'lock' : pygics.Lock()}
         uref = self.context[user]
@@ -163,8 +163,10 @@ class TalkBox:
                 reply = self.error
                 next_reply = str(e)
             lock.release()
-            return reply, next_reply
-        else: return self.locking, None
+            if isinstance(reply, types.FunctionType): reply = reply(data, user, text)
+            if isinstance(next_reply, types.FunctionType): next_reply = reply(data, user, text)
+            return '%s\n%s' % (reply, next_reply)
+        else: return self.locking
 
 def msg(key, room_id, text):
     resp = requests.post(SPARK_MESSAGE_URL,
