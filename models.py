@@ -65,6 +65,8 @@ class Message:
     class File:
         def __init__(self, content): self.content = content
         
+    class Bypass(Exception): pass
+        
     @classmethod
     def encoding(cls, text):
         if isinstance(text, str) or isinstance(text, unicode): return text
@@ -87,7 +89,7 @@ class Message:
             self.person_id = raw_data['personId']
             self.person_email = raw_data['personEmail']
         except: raise Exception('parse request failed')
-        if self.person_email == bot.email: raise Exception('bypass')
+        if self.person_email == bot.email: raise Message.Bypass()
         try:
             msg_resp, psn_resp = pygics.Burst(
             )(requests.get, SPARK_MESSAGE_URL + self.msg_id, headers=bot.headers

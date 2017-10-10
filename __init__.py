@@ -22,6 +22,7 @@ def listen(bot_key, bot_id, bot_name, bot_server):
         def decofunc(req, *argv, **kargs):
             message = Message(bot, req)
             try: message.reply(func(message, message.who, message.text))
+            except Message.Bypass: pass
             except Exception as e: return message.replyError(e)
             return 'ok'
     
