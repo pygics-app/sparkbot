@@ -5,6 +5,7 @@ Created on 2017. 10. 10.
 '''
 
 import re
+import json
 import jzlib
 import pygics
 import requests
@@ -66,6 +67,8 @@ class Message:
         def __init__(self, content): self.content = content
         
     class Bypass(Exception): pass
+    
+    USER_CACHE = {}
         
     @classmethod
     def encoding(cls, text):
@@ -90,6 +93,9 @@ class Message:
             self.person_email = raw_data['personEmail']
         except: raise Exception('parse request failed')
         if self.person_email == bot.email: raise Message.Bypass()
+        
+        print json.dumps(raw_data, indent=2)
+        
         try:
             msg_resp, psn_resp = pygics.Burst(
             )(requests.get, SPARK_MESSAGE_URL + self.msg_id, headers=bot.headers

@@ -21,11 +21,10 @@ def listen(bot_key, bot_id, bot_name, bot_server):
         @pygics.api('POST', '/' + bot_id)
         def decofunc(req, *argv, **kargs):
             try:
-                message = Message(bot, req)
-                message.reply(func(message, message.who, message.text))
+                msg = Message(bot, req)
+                msg.reply(func(msg, msg.who, msg.text))
             except Message.Bypass: pass
-            except Exception as e: message.replyError(e)
-            return 'ok'
+            except Exception as e: msg.replyError(e)
     
         return decofunc
     
