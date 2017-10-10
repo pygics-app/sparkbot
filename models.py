@@ -11,7 +11,7 @@ import pygics
 import requests
 
 '''
-Message Type
+Message Hook Type
 # 1 on 1
 {
   "roomType": "direct",
@@ -29,6 +29,21 @@ Message Type
   "personEmail": "hyjang@cisco.com",
   "mentionedPeople": [
     "{metioned people ID}", ...
+  ],
+  "roomId": "",
+  "id": ""
+}
+
+Message Detail
+{
+  "roomType": "group",
+  "created": "2017-10-10T13:05:42.162Z",
+  "personId": "",
+  "text": "BOT HI",
+  "html": "<p><spark-mention data-object-type=\"person\" data-object-id=\"\">BOT</spark-mention> HI</p>",
+  "personEmail": "hyjang@cisco.com",
+  "mentionedPeople": [
+    "{metioned people ID}"
   ],
   "roomId": "",
   "id": ""
@@ -135,10 +150,6 @@ class Message:
         self.raw_request = raw_data
         self.raw_message = msg_data
         self.raw_person = psn_data
-        
-        print json.dumps(raw_data, indent=2)
-        print json.dumps(psn_data, indent=2)
-        print json.dumps(msg_data, indent=2)
     
     def reply(self, content):
         if isinstance(content, str) or isinstance(content, unicode):
