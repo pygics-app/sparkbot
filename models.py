@@ -10,6 +10,31 @@ import jzlib
 import pygics
 import requests
 
+'''
+Message Type
+# 1 on 1
+{
+  "roomType": "direct",
+  "created": "2017-10-10T12:42:21.454Z",
+  "personId": "",
+  "personEmail": "hyjang@cisco.com",
+  "roomId": "",
+  "id": ""
+}
+# @BOT at Space
+{
+  "roomType": "group",
+  "created": "2017-10-10T12:43:42.021Z",
+  "personId": "",
+  "personEmail": "hyjang@cisco.com",
+  "mentionedPeople": [
+    "{metioned people ID}", ...
+  ],
+  "roomId": "",
+  "id": ""
+}
+'''
+
 SPARK_WEBHOOK_URL = 'https://api.ciscospark.com/v1/webhooks/'
 SPARK_MESSAGE_URL = 'https://api.ciscospark.com/v1/messages/'
 SPARK_PERSON_URL = 'https://api.ciscospark.com/v1/people/'
@@ -68,8 +93,6 @@ class Message:
         
     class Bypass(Exception): pass
     
-    USER_CACHE = {}
-        
     @classmethod
     def encoding(cls, text):
         if isinstance(text, str) or isinstance(text, unicode): return text
@@ -93,9 +116,6 @@ class Message:
             self.person_email = raw_data['personEmail']
         except: raise Exception('parse request failed')
         if self.person_email == bot.email: raise Message.Bypass()
-        
-        print json.dumps(raw_data, indent=2)
-        
         try:
             msg_resp, psn_resp = pygics.Burst(
             )(requests.get, SPARK_MESSAGE_URL + self.msg_id, headers=bot.headers
@@ -115,6 +135,10 @@ class Message:
         self.raw_request = raw_data
         self.raw_message = msg_data
         self.raw_person = psn_data
+        
+        print json.dumps(raw_data, indent=2)
+        print json.dumps(psn_data, indent=2)
+        print json.dumps(msg_data, indent=2)
     
     def reply(self, content):
         if isinstance(content, str) or isinstance(content, unicode):
