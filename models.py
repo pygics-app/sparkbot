@@ -16,6 +16,8 @@ SPARK_PERSON_URL = 'https://api.ciscospark.com/v1/people/'
 class Bot(jzlib.Inventory):
     
     def __init__(self, bot_key, bot_id, bot_name, bot_server):
+        jzlib.Inventory.__init__(self)
+        
         # Set Bot Descriptions
         self.id = bot_id
         self.key = bot_key
@@ -52,7 +54,7 @@ class Bot(jzlib.Inventory):
             elif markdown: data['markdown'] = markdown
             elif file: data['file'] = [file]
             else: raise Exception('incorrect data to send')
-            resp = requests.post(SPARK_MESSAGE_URL, headers=self.headers, json=data)
+            resp = requests.post(SPARK_MESSAGE_URL, headers=(~self).headers, json=data)
             if resp.status_code != 200: raise Exception('sending message failed')
 
 class Message:
