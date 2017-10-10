@@ -18,7 +18,7 @@ def listen(bot_key, bot_id, bot_name, bot_server):
     
     def botfunc(func):
         
-        @pygics.api('POST', '/sparkbot/' + bot_id)
+        @pygics.api('POST', '/' + bot_id)
         def decofunc(req, *argv, **kargs):
             try:
                 message = Message(bot, req)

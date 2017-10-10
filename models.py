@@ -23,7 +23,7 @@ class Bot(jzlib.Inventory):
         self.key = bot_key
         self.name = bot_name
         self.email = bot_id + '@sparkbot.io'
-        self.server = 'http://%s/sparkbot/%s' % (bot_server, bot_id)
+        self.server = 'http://%s/%s' % (bot_server, bot_id)
         self.hook = bot_id + 'hook'
         self.headers = {'Content-type' : 'application/json; charset=utf-8', 'Authorization' : 'Bearer %s' % bot_key}
         
