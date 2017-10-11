@@ -18,7 +18,7 @@ def answer_thank(msg):
     return u'별 말씀을요~\n%s님이 부르시면 언제든지 도와드릴게요' % msg.who
 
 tb = Context(u'처리중입니다', u'에러가 발생했어요')(
-    Talk('init', None, u'무슨 말씀인지 모르겠어요')(
+    Talk('init', u'처음으로 돌아갑니다', u'무슨 말씀인지 모르겠어요')(
         Key(
             [u'안녕', u'하이', u'헬로', u'반가', u'방가', u'hello', u'hi'],
             answer_hello
