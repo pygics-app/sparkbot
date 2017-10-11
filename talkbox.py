@@ -85,7 +85,7 @@ class Talk:
         for key in self.keys:
             match, result = key.match(msg)
             if result:
-                if isinstance(key.reply, types.FunctionType):
+                if isinstance(key.action, types.FunctionType):
                     if isinstance(result, dict): reply = key.action(msg, **result)
                     else: reply = key.action(msg)
                 else: reply = key.action
@@ -117,7 +117,7 @@ class Context:
     
     def getError(self, msg):
         if isinstance(self.error, types.FunctionType): return self.error(msg)
-        else: return self.lock
+        else: return self.error
     
     def do(self, msg):
         if msg.person_id not in self.context:
