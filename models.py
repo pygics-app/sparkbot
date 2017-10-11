@@ -154,6 +154,7 @@ class Message:
             self.bot.Message.create(room_id=self.room_id, text=content)
         elif isinstance(content, Message.MarkDown): self.bot.Message.create(room_id=self.room_id, markdown=Message.encoding(content.content))
         elif isinstance(content, Message.File): self.bot.Message.create(room_id=self.room_id, file=Message.encoding(content.content))
+        elif content == None: pass
         else: self.bot.Message.create(room_id=self.room_id, text=Message.getErrorMessage('unsupport content type'))
 
     def replyError(self, error):
