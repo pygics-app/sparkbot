@@ -108,7 +108,7 @@ class Context:
     def set(self, *talks):
         for talk in talks:
             if not self.init: self.init = talk
-            self.talk[talk._id] = talk
+            self.talk[talk.id] = talk
         return self
     
     def getLock(self, msg):
