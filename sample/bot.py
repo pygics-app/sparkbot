@@ -4,15 +4,15 @@ Created on 2017. 4. 12.
 @author: HyechurnJang
 '''
 
-import sparkbot
+from sparkbot import *
 
 BOT_NAME = ''
 BOT_ID = ''
 BOT_KEY = ''
 BOT_SERVER = ''
 
-@sparkbot.listen(BOT_KEY, BOT_ID, BOT_NAME, BOT_SERVER)
-def episode(message, who, text):
+@listen(BOT_KEY, BOT_ID, BOT_NAME, BOT_SERVER)
+def episode(msg, who, text):
     #===========================================================================
     # Write Code Here !
     #===========================================================================

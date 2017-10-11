@@ -10,45 +10,43 @@ import jzlib
 import pygics
 import requests
 
-'''
-Message Hook Type
-# 1 on 1
-{
-  "roomType": "direct",
-  "created": "2017-10-10T12:42:21.454Z",
-  "personId": "",
-  "personEmail": "hyjang@cisco.com",
-  "roomId": "",
-  "id": ""
-}
-# @BOT at Space
-{
-  "roomType": "group",
-  "created": "2017-10-10T12:43:42.021Z",
-  "personId": "",
-  "personEmail": "hyjang@cisco.com",
-  "mentionedPeople": [
-    "{metioned people ID}", ...
-  ],
-  "roomId": "",
-  "id": ""
-}
-
-Message Detail
-{
-  "roomType": "group",
-  "created": "2017-10-10T13:05:42.162Z",
-  "personId": "",
-  "text": "BOT HI",
-  "html": "<p><spark-mention data-object-type=\"person\" data-object-id=\"\">BOT</spark-mention> HI</p>",
-  "personEmail": "hyjang@cisco.com",
-  "mentionedPeople": [
-    "{metioned people ID}"
-  ],
-  "roomId": "",
-  "id": ""
-}
-'''
+# Message Hook Type
+# # 1 on 1
+# {
+#   "roomType": "direct",
+#   "created": "2017-10-10T12:42:21.454Z",
+#   "personId": "",
+#   "personEmail": "hyjang@cisco.com",
+#   "roomId": "",
+#   "id": ""
+# }
+# # @BOT at Space
+# {
+#   "roomType": "group",
+#   "created": "2017-10-10T12:43:42.021Z",
+#   "personId": "",
+#   "personEmail": "hyjang@cisco.com",
+#   "mentionedPeople": [
+#     "{metioned people ID}", ...
+#   ],
+#   "roomId": "",
+#   "id": ""
+# }
+# 
+# Message Detail
+# {
+#   "roomType": "group",
+#   "created": "2017-10-10T13:05:42.162Z",
+#   "personId": "",
+#   "text": "BOT HI",
+#   "html": "<p><spark-mention data-object-type=\"person\" data-object-id=\"\">BOT</spark-mention> HI</p>",
+#   "personEmail": "hyjang@cisco.com",
+#   "mentionedPeople": [
+#     "{metioned people ID}"
+#   ],
+#   "roomId": "",
+#   "id": ""
+# }
 
 SPARK_WEBHOOK_URL = 'https://api.ciscospark.com/v1/webhooks/'
 SPARK_MESSAGE_URL = 'https://api.ciscospark.com/v1/messages/'

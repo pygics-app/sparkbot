@@ -10,7 +10,7 @@ import jzlib
 import pygics
 
 from models import Bot, Message
-from talkbox import TalkBox, Talk, Key
+from talkbox import Context, Talk, Key
 
 def listen(bot_key, bot_id, bot_name, bot_server):
     
