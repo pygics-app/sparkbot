@@ -8,6 +8,11 @@ import re
 import types
 import pygics
 
+# Define Action Functions
+# def name_of_action_func(msg, *args, **kargs):
+#     <PROCESSING>
+#     return 'Blah Blah'
+
 class Key:
     
     class Pattern:

@@ -57,7 +57,6 @@ class Bot(jzlib.Inventory):
     def __init__(self, bot_key, bot_id, bot_name, bot_server):
         jzlib.Inventory.__init__(self)
         
-        # Set Bot Descriptions
         self.id = bot_id
         self.key = bot_key
         self.name = bot_name
@@ -66,7 +65,6 @@ class Bot(jzlib.Inventory):
         self.hook = bot_id + 'hook'
         self.headers = {'Content-type' : 'application/json; charset=utf-8', 'Authorization' : 'Bearer %s' % bot_key}
         
-        # Register Webhook
         try:
             resp = requests.get(SPARK_WEBHOOK_URL, headers=self.headers)
             webhooks = resp.json()['items']
