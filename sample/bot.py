@@ -11,7 +11,7 @@ BOT_USERNAME = '' # "Bot Username" Field without @sparkbot.io
 BOT_KEY = '' # "Bot Access Token" Field
 BOT_SERVER = '' # Pygics SparkBot Server IP and Port
 
-@listen(BOT_KEY, BOT_ID, BOT_NAME, BOT_SERVER)
+@listen(BOT_KEY, BOT_USERNAME, BOT_NAME, BOT_SERVER)
 def episode(msg, who, text):
     #===========================================================================
     # Write Code Here !
