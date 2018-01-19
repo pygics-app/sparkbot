@@ -6,10 +6,10 @@ Created on 2017. 4. 12.
 
 from sparkbot import *
 
-BOT_NAME = ''
-BOT_ID = ''
-BOT_KEY = ''
-BOT_SERVER = ''
+BOT_NAME = '' # "Name" Field
+BOT_USERNAME = '' # "Bot Username" Field without @sparkbot.io
+BOT_KEY = '' # "Bot Access Token" Field
+BOT_SERVER = '' # Pygics SparkBot Server IP and Port
 
 @listen(BOT_KEY, BOT_ID, BOT_NAME, BOT_SERVER)
 def episode(msg, who, text):
