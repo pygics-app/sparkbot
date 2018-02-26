@@ -51,6 +51,7 @@ import requests
 SPARK_WEBHOOK_URL = 'https://api.ciscospark.com/v1/webhooks/'
 SPARK_MESSAGE_URL = 'https://api.ciscospark.com/v1/messages/'
 SPARK_PERSON_URL = 'https://api.ciscospark.com/v1/people/'
+SPARK_MEMBERSHIP_URL = 'https://api.ciscospark.com/v1/memberships/'
 
 class Bot(jzlib.Inventory):
     
@@ -93,6 +94,16 @@ class Bot(jzlib.Inventory):
             else: raise Exception('incorrect data to send')
             resp = requests.post(SPARK_MESSAGE_URL, headers=(~self).headers, json=data)
             if resp.status_code != 200: raise Exception('sending message failed')
+    
+    class Membership(jzlib.Inventory):
+        
+        def create(self, room_id, person_id=None, person_email=None, is_moderator=False):
+            data = {'roomId' : room_id}
+            if person_id: data['personId'] = person_id
+            elif person_email: data['personEmail'] = person_email
+            if is_moderator: data['isModerator'] = is_moderator
+            resp = requests.post(SPARK_MEMBERSHIP_URL, headers=(~self).headers, json=data)
+            if resp.status_code != 200: raise Exception('inviting person failed')
 
 class Message:
     
